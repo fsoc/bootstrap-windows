@@ -29,7 +29,7 @@ AWS_SECRET_ACCESS_KEY = "yy"
 # Node details
 NODE_NAME         = options[:name]
 CHEF_ENVIRONMENT  = "ci"
-INSTANCE_SIZE     = "m1.medium"
+INSTANCE_SIZE     = "m1.small"
 EBS_ROOT_VOL_SIZE = 70   # in GB
 #REGION            = "eu-west-1a"
 AVAILABILITY_ZONE = "eu-west-1a"
