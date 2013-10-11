@@ -3,7 +3,7 @@ bootstrap-windows
 
 Provision and Bootstrap Windows EC2 Instances With Chef on OSX
 
-When using the script at http://wiki.oceanframework.net/index.php/Installing_TeamCity_Test_Agents to bootstrap windows nodes on ec2 a bug appears.
+When using the script at http://scottwb.com/blog/2012/12/13/provision-and-bootstrap-windows-ec2-instances-with-chef/ to bootstrap windows nodes on ec2 a bug appears.
 
 The following commit on knife-windows https://github.com/opscode/knife-windows/commit/8e81e844158f759ffb602b0eee1f8f22effa6b44 introduces the ' sign that gets encoded in a strange way when running the script on OSX and prevents the chef msi client to be downloaded. The bug is currently reported at https://tickets.opscode.com/browse/KNIFE-379.
 
