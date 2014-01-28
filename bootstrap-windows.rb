@@ -40,6 +40,7 @@ RUN_LIST          = "role['teamcity_agent_windows']"
 USER_DATA_FILE    = "/tmp/userdata.txt"
 USERNAME          = "Administrator"
 PASSWORD          = "testtest"
+SUBNET            = "sb-xx"
 
 # Write user data file that sets up WinRM and sets the Administrator password.
 File.open(USER_DATA_FILE, "w") do |f|
@@ -70,7 +71,7 @@ provision_cmd = [
   "--image #{AMI_NAME}",
   "--security-group-ids '#{SECURITY_GROUP}'",
   "--user-data #{USER_DATA_FILE}",
-  "--subnet subnet-5e51b035",
+  "--subnet #{SUBNET}",
   "--verbose"
 ].join(" ")
 
