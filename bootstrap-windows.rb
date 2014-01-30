@@ -13,7 +13,7 @@ OptionParser.new do |opts|
 
 end.parse!
 
-versions_to_ami = {'win2k3' => 'ami-1132df66', 'win2k8' => 'ami-ab38d5dc', 'win2k12' => 'ami-a63edbd1' }
+versions_to_ami = {'win2k3' => 'ami-1132df66', 'win2k8' => 'ami-cf3ad7b8', 'win2k12' => 'ami-a63edbd1' }
 
 if versions_to_ami.has_key?options[:version]
   ami = versions_to_ami[options[:version]]
@@ -116,9 +116,9 @@ s.close
 
 # You'd think we'd be good to go now...but NOPE! There is still more Windows
 # bootstrap crap going on, and we have no idea what we need to wait on. So,
-# in a last-ditch effort to make this all work, we've seen that 120 seconds
+# in a last-ditch effort to make this all work, we've seen that a few minutes
 # ought to be enough...
-wait_time = 180
+wait_time = 180 
 while wait_time > 0
   puts "Better wait #{wait_time} more seconds..."
   sleep 1
