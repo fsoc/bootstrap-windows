@@ -31,10 +31,8 @@ NODE_NAME         = options[:name]
 CHEF_ENVIRONMENT  = "ci"
 INSTANCE_SIZE     = "m1.medium"
 EBS_ROOT_VOL_SIZE = 70   # in GB
-#REGION            = "eu-west-1a"
 AVAILABILITY_ZONE = "eu-west-1a"
 AMI_NAME          = ami
-#AMI_NAME          = "ami-463edb31"
 SECURITY_GROUP    = "zz"
 RUN_LIST          = "role['teamcity_agent_windows']"
 USER_DATA_FILE    = "/tmp/userdata.txt"
@@ -66,7 +64,6 @@ provision_cmd = [
   "-E '#{CHEF_ENVIRONMENT}'",
   "--flavor #{INSTANCE_SIZE}",
   "--ebs-size #{EBS_ROOT_VOL_SIZE}",
-  #"--region #{REGION}",
   "--availability-zone #{AVAILABILITY_ZONE}",
   "--image #{AMI_NAME}",
   "--security-group-ids '#{SECURITY_GROUP}'",
