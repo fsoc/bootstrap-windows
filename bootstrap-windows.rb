@@ -13,7 +13,7 @@ OptionParser.new do |opts|
 
 end.parse!
 
-versions_to_ami = {'win2k3' => 'ami-1132df66', 'win2k8' => 'ami-cf3ad7b8', 'win2k12' => 'ami-a63edbd1' }
+versions_to_ami = {'win2k3' => 'ami-aea353d9', 'win2k8' => 'ami-ecb4449b', 'win2k12' => 'ami-a63edbd1' }
 
 if versions_to_ami.has_key?options[:version]
   ami = versions_to_ami[options[:version]]
