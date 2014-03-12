@@ -13,7 +13,10 @@ OptionParser.new do |opts|
 
 end.parse!
 
-versions_to_ami = {'win2k3' => 'ami-aea353d9', 'win2k8' => 'ami-ecb4449b', 'win2k12' => 'ami-a63edbd1' }
+versions_to_ami = eval(ENV["AWS_AMIS"] ||
+  "{'win2k3' => 'ami-aea353d9',
+  'win2k8' => 'ami-ecb4449b',
+  'win2k12' => 'ami-a63edbd1'}")
 
 if versions_to_ami.has_key?options[:version]
   ami = versions_to_ami[options[:version]]
@@ -23,8 +26,10 @@ else
 end
 
 # AWS API Credentials
-AWS_ACCESS_KEY_ID     = "xx"
-AWS_SECRET_ACCESS_KEY = "yy"
+# Save these in your shell as per instructions at
+# http://docs.aws.amazon.com/AWSEC2/latest/CommandLineReference/set-up-ec2-cli-linux.html
+AWS_ACCESS_KEY = ENV["AWS_ACCESS_KEY"]
+AWS_SECRET_KEY = ENV["AWS_SECRET_KEY"]
 
 # Node details
 NODE_NAME         = options[:name]
@@ -33,12 +38,12 @@ INSTANCE_SIZE     = "m1.medium"
 EBS_ROOT_VOL_SIZE = 70   # in GB
 AVAILABILITY_ZONE = "eu-west-1a"
 AMI_NAME          = ami
-SECURITY_GROUP    = "zz"
+SECURITY_GROUP    = ENV["AWS_SG"]
 RUN_LIST          = "role['teamcity_agent_windows']"
 USER_DATA_FILE    = "/tmp/userdata.txt"
 USERNAME          = "Administrator"
 PASSWORD          = "testtest"
-SUBNET            = "sb-xx"
+SUBNET            = ENV["AWS_SUBNET"]
 
 # Write user data file that sets up WinRM and sets the Administrator password.
 File.open(USER_DATA_FILE, "w") do |f|
@@ -58,8 +63,8 @@ provision_cmd = [
   "knife ec2 server create",
   "--identity-file ~/.ssh/keys/ocean.pem",
   "--ssh-key ocean",
-  "--aws-access-key-id #{AWS_ACCESS_KEY_ID}",
-  "--aws-secret-access-key #{AWS_SECRET_ACCESS_KEY}",
+  "--aws-access-key-id #{AWS_ACCESS_KEY}",
+  "--aws-secret-access-key #{AWS_SECRET_KEY}",
   "--tags 'Name=#{NODE_NAME}'",
   "-E '#{CHEF_ENVIRONMENT}'",
   "--flavor #{INSTANCE_SIZE}",
