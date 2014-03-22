@@ -65,7 +65,7 @@ provision_cmd = [
   "--ssh-key ocean",
   "--aws-access-key-id #{AWS_ACCESS_KEY}",
   "--aws-secret-access-key #{AWS_SECRET_KEY}",
-  "--tags 'Name=#{NODE_NAME}'",
+  "--tags 'Name=#{NODE_NAME}',ChefEnv=ci",
   "-E '#{CHEF_ENVIRONMENT}'",
   "--flavor #{INSTANCE_SIZE}",
   "--ebs-size #{EBS_ROOT_VOL_SIZE}",
