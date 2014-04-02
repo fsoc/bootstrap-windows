@@ -34,7 +34,7 @@ AWS_SECRET_KEY = ENV["AWS_SECRET_KEY"]
 # Node details
 NODE_NAME         = options[:name]
 CHEF_ENVIRONMENT  = "ci"
-INSTANCE_SIZE     = "m1.medium"
+INSTANCE_SIZE     = "m3.medium"
 EBS_ROOT_VOL_SIZE = 70   # in GB
 AVAILABILITY_ZONE = "eu-west-1a"
 AMI_NAME          = ami
