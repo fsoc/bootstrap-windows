@@ -13,15 +13,17 @@ OptionParser.new do |opts|
 
 end.parse!
 
-versions_to_ami = eval(ENV["AWS_AMIS"] ||
-  "{'win2k3' => 'ami-aea353d9',
-  'win2k8' => 'ami-ecb4449b',
-  'win2k12' => 'ami-a63edbd1'}")
+ami_id = ENV["AWS_AMI"] || 'ami-ecb4449b'
 
-if versions_to_ami.has_key?options[:version]
-  ami = versions_to_ami[options[:version]]
+ver_to_role = {'ie8' => 'teamcity_agent_windows_ie8',
+  'ie9' => 'teamcity_agent_windows_ie9'}
+
+
+if ver_to_role.has_key?options[:version]
+  role = ver_to_role[options[:version]]
+  puts "using role: #{role}"
 else
-  puts "the version #{options[:version]} has no ami set. The amis are based on eu-west."
+  puts "the ie version #{options[:version]} has no role set."
   exit 1
 end
 
@@ -34,12 +36,12 @@ AWS_SECRET_KEY = ENV["AWS_SECRET_KEY"]
 # Node details
 NODE_NAME         = options[:name]
 CHEF_ENVIRONMENT  = "ci"
-INSTANCE_SIZE     = "m3.medium"
+INSTANCE_SIZE     = "m1.medium"
 EBS_ROOT_VOL_SIZE = 70   # in GB
 AVAILABILITY_ZONE = "eu-west-1a"
-AMI_NAME          = ami
+AMI_NAME          = ami_id
 SECURITY_GROUP    = ENV["AWS_SG"]
-RUN_LIST          = "role['teamcity_agent_windows']"
+RUN_LIST          = "role['#{role}']"
 USER_DATA_FILE    = "/tmp/userdata.txt"
 USERNAME          = "Administrator"
 PASSWORD          = "testtest"
@@ -65,7 +67,7 @@ provision_cmd = [
   "--ssh-key ocean",
   "--aws-access-key-id #{AWS_ACCESS_KEY}",
   "--aws-secret-access-key #{AWS_SECRET_KEY}",
-  "--tags 'Name=#{NODE_NAME}',ChefEnv=ci",
+  "--tags 'Name=#{NODE_NAME},ChefEnv=ci'",
   "-E '#{CHEF_ENVIRONMENT}'",
   "--flavor #{INSTANCE_SIZE}",
   "--ebs-size #{EBS_ROOT_VOL_SIZE}",
