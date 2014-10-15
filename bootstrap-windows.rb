@@ -44,7 +44,7 @@ SECURITY_GROUP    = ENV["AWS_SG"]
 RUN_LIST          = "role['#{role}']"
 USER_DATA_FILE    = "/tmp/userdata.txt"
 USERNAME          = "Administrator"
-PASSWORD          = "testtest"
+PASSWORD          = ENV["AWS_WIN_PWD"]
 SUBNET            = ENV["AWS_SUBNET"]
 
 # Write user data file that sets up WinRM and sets the Administrator password.
