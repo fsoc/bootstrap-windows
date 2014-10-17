@@ -51,7 +51,7 @@ SUBNET            = ENV["AWS_SUBNET"]
 File.open(USER_DATA_FILE, "w") do |f|
   f.write <<EOT
 <script>
-winrm quickconfig -q & winrm set winrm/config/winrs @{MaxMemoryPerShellMB="900"} & winrm set winrm/config @{MaxTimeoutms="9900000"} & winrm set winrm/config/service @{AllowUnencrypted="true"} & winrm set winrm/config/service/auth @{Basic="true"}
+winrm quickconfig -q & winrm set winrm/config/winrs @{MaxMemoryPerShellMB="3000"} & winrm set winrm/config @{MaxTimeoutms="9900000"} & winrm set winrm/config/service @{AllowUnencrypted="true"} & winrm set winrm/config/service/auth @{Basic="true"}
 </script>
 <powershell>
 $admin = [adsi]("WinNT://./administrator, user")
@@ -122,41 +122,13 @@ s.close
 # bootstrap crap going on, and we have no idea what we need to wait on. So,
 # in a last-ditch effort to make this all work, we've seen that a few minutes
 # ought to be enough...
-wait_time = 180 
+wait_time = 120 
 while wait_time > 0
   puts "Better wait #{wait_time} more seconds..."
   sleep 1
   wait_time -= 1
 end
 puts "Finally ready to try bootstrapping instance..."
-
-# First add the wget.ps1 file
-wget_cmd = [
-  "knife winrm #{ip_addr}",
-  "'> C:\\wget.ps1 (echo.param^([String] $remoteUrl, [String] $localPath ^); $webClient = new-object System.Net.WebClient; $webClient.DownloadFile^($remoteUrl, $localPath^);)'",
-  "-m",
-  "-x #{USERNAME}",
-  "-P '#{PASSWORD}'",
-  "--verbose"
-].join(' ')
-
-# get the msi file since knife-windows 0.5.10 gets the cscript error
-puts "executing #{wget_cmd}"
-status = system(wget_cmd) ? 0 : -1
-puts "returned #{status}"
-
-dl_cmd = [
-  "knife winrm #{ip_addr}",
-  "'powershell -ExecutionPolicy Unrestricted -NoProfile -NonInteractive \"C:\\wget.ps1 http://www.opscode.com/chef/install.msi %TEMP%\\chef-client-latest.msi'",
-  "-m",
-  "-x #{USERNAME}",
-  "-P '#{PASSWORD}'",
-  "--verbose"
-].join(' ')
-
-puts "executing #{dl_cmd}"
-status = system(dl_cmd) ? 0 : -1
-puts "returned #{status}"
 
 bootstrap_cmd = [
   "knife bootstrap windows winrm #{ip_addr}",
